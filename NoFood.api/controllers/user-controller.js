@@ -23,25 +23,34 @@ userController.prototype.getById = async (req, res) => {
 };
 
 userController.prototype.post = async (req, res) => {
-    let _validationContract = new validation();
+    try {
+        let _validationContract = new validation();
 
 
-    _validationContract.isRequired(req.body.name, 'Informe seu nome');
-    _validationContract.isRequired(req.body.email, 'Informe seu e-mail');
-    _validationContract.isEmail(req.body.email, 'Informe um e-mail valido');
-    _validationContract.isRequired(req.body.password, 'Informe a Senha');
-    _validationContract.isRequired(req.body.confirmed, 'Informe a Senha de Confirmação');
-    _validationContract.isTrue(req.body.password != req.body.confirmed, 'Senha de confirmação não é igual a Senha');
+        _validationContract.isRequired(req.body.name, 'Informe seu nome');
+        _validationContract.isRequired(req.body.email, 'Informe seu e-mail');
+        _validationContract.isEmail(req.body.email, 'Informe um e-mail valido');
+        _validationContract.isRequired(req.body.password, 'Informe a Senha');
+        _validationContract.isRequired(req.body.confirmed, 'Informe a Senha de Confirmação');
+        _validationContract.isTrue(req.body.password != req.body.confirmed, 'Senha de confirmação não é igual a Senha');
 
-    let exists = await _repo.isEmailExists(req.body.email);
+        req.body.active = true;
+        if (req.body.email) {
+            let exists = await _repo.isEmailExists(req.body.email);
+            if (exists) {
+                _validationContract.isTrue((exists.name != undefined), `Já existe o e-mail ${req.body.email} cadastrado em nossa base`);
+            }
+        }
 
-    if (exists) {
-        _validationContract.isTrue((exists.name != undefined), `Já existe o e-mail ${req.body.email} cadastrado em nossa base`);
+        if (req.body.password) {
+            req.body.password = md5(req.body.password);
+        }
+
+
+        return ctrlBase.post(_repo, _validationContract, req, res);
+    } catch (error) {
+        return res.status(500).send({ message: 'Ocorreu um erro interno', validation: error });
     }
-
-    req.body.password = md5(req.body.password);
-
-    return ctrlBase.post(_repo, _validationContract, req, res);
 
 };
 
@@ -86,7 +95,7 @@ userController.prototype.auth = async (req, res) => {
     if (_user) {
         res.status(200).send({
             user: _user,
-            token: jwt.sign({us: _user}, variables.security.secretKey)
+            token: jwt.sign({ us: _user }, variables.security.secretKey)
         })
     } else {
         res.status(404).send({ message: 'Usuário invalido' });

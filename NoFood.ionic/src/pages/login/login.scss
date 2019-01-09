@@ -1,35 +1,3 @@
 page-login {
-  ion-content{
 
-    background:url(/assets/imagens/fundo.jpg);
-    background-size: cover;
-
-  }
-  .scroll-content{
-    background:rgba(255, 10, 37, 0.37);
-  }
-  .logo{
-    width: 100%;
-    text-align: center;
-    margin-top:20%;
-      span{
-        color:#fff;
-        font-size: 1.6rem;
-        text-align: center;
-        display: block;
-        font-weight: bold;
-      }
-  }
-  .logo img{
-    width:50vw;
-  }
-  .item{
-    background: transparent!important;
-  }
-  .list .item-input:last-child{
-    border-bottom: none!important;
-  }
-  .text-input-ios{
-    color: #fff;
-  }
 }

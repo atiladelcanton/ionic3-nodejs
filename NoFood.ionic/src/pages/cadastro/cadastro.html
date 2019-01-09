@@ -1,9 +1,30 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>cadastro</ion-title>
-  </ion-navbar>
-</ion-header>
+<ion-content padding class="backImage">
 
-<ion-content padding>
+  <div class="logo">
+    <img src="/assets/imagens/icon-branco.png" alt="">
+    <span>NoFood</span>
+  </div>
 
+  <ion-list no-lines class="list-transparent">
+    <ion-item>
+      <ion-input [(ngModel)]="usuario.name" type="text" placeholder="Nome"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input [(ngModel)]="usuario.email" type="text" placeholder="E-mail"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input [(ngModel)]="usuario.password" type="password" placeholder="Senha"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input [(ngModel)]="usuario.confirmed" type="password" placeholder="Confirmação Senha"></ion-input>
+    </ion-item>
+  </ion-list>
+  <ion-grid>
+    <ion-row>
+      <button ion-button block round color="secondary" (click)="cadastrar()">Cadastrar</button>
+    </ion-row>
+    <ion-row>
+      <button ion-button block round outline color="secondary" (click)="cancelar()">Voltar</button>
+    </ion-row>
+  </ion-grid>
 </ion-content>
